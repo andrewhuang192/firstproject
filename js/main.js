@@ -225,6 +225,12 @@ let playerMessage = null
 let whoseTurn = null
 let winner = null
 
+let player1Stack = null
+let player2Stack = null
+let totalPot = null
+let player1Bet = null
+let player2Bet = null
+
 /*----- store HTML elements to use in functions and event listeners -----*/
 // let playArea 
 // let player1Hand
@@ -242,7 +248,6 @@ let resetButton = document.querySelector('#reset');
 let message = document.querySelector('.message');
 let player1Message = document.querySelector('.player1message');
 let player2Message = document.querySelector('.player2message');
-
 
 
 /*----- event listeners -----*/
@@ -294,6 +299,7 @@ function showWhoseTurn() {
 }
 
 function render() {
+
     showWhoseTurn();
     if(playerTurn < 3) {
         for (let i = 0; i < 4; i++) {
@@ -330,9 +336,10 @@ function call() {
         return
     }
     else {
-    playerTurn += 1
-    whoseTurn *= -1
-    render();
+        player1Stack = player1Stack
+        playerTurn += 1
+        whoseTurn *= -1
+        render();
     }
 }
 
@@ -392,24 +399,56 @@ function fold() {
 // +1 14 12 10 07 03
 // And these are trivial to compare.
 
+
+//check for suits in suitsBoard, add to playerSuits - let playerSuits = player1Suits
 function buildHand(x) {
-    for(let i=0; i<3; i++) {
-        if (flopBoard.includes(x[i])) {
-            x.push(x[i])
-            const index = flopBoard.indexOf(x[i]);
-            flopBoard.splice(index, 1);
+
+    //get temporary arrays for suits in order to build hand with suits first
+    let handSuits = [];
+    let flopSuits = [];
+    for(let i=0; i<2; i++) {
+        handSuits.push(suitsLookup[currentHand[i]]); 
+    } 
+    for(let i=4; i< 9; i++) { 
+        flopSuits.push(suitsLookup[currentHand[i]]);
+    } 
+
+    //Now we start building the hand here 
+    for (let a=0; a<3; a++) {
+        if(flopSuits.includes(handSuits[a])) {
+            x.push(handSuits[a])
+            const index = flopSuits.indexOf(handSuits[a]);
+            flopSuits.splice(index, 1);
+        }
+        else if(x[0] > x[1]) {
+            for(let b = 0; b < 4; b++) {
+                if (flopBoard[b] = x[0]) {
+                    x.push(x[0])
+                }
+                else return
+            }
+        }
+        else if(x[0] < x[1]) {
+            for(let c = 0; c < 4; c++) {
+                if (flopBoard[c] = x[1]) {
+                    x.push(x[1])
+                }
+                else return
+            }
         }
         else {
             x.push(Math.max(...flopBoard));
-            const index = flopBoard.indexOf(Math.max(...flopBoard));
-            flopBoard.splice(index, 1);
-            // const index2 = player2Hand.indexOf(Math.max(...flopBoard));
-            // player2Hand.splice(index2, 1)
         }
+        x.sort((a,b) => b - a);
+        return x, flopBoard
     }
-    x.sort((a,b) => b - a);
-    return x, flopBoard
 }
+
+// for(let i=0; i<3; i++) {
+//     if (suitsBoard.includes(x[i])) {
+//         x[i] = suitsLookup[x[i]]
+//         x.push(x[i]) 
+//     } 
 
 function buildArray() {
     for(let i=0; i< 9; i++) {
@@ -567,7 +606,7 @@ function getWinner() {
         message.textContent = 'PLAYER ONE (1)'
     }
     else if (player2Hand.length > player1Hand.length) {
-        message.textContent = 'PLAYER ONE (2)'
+        message.textContent = 'PLAYER ONE (1)'
     }
     else if (player1Hand[0] > player2Hand[0]) {
         message.textContent = 'PLAYER ONE (1)'
@@ -575,5 +614,4 @@ function getWinner() {
     else {
         message.textContent = 'PLAYER TWO (2)'
     }
-    
 }

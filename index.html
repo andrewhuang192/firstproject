@@ -8,48 +8,62 @@
   <link rel="stylesheet" href="css/main.css">
   <script defer src="js/main.js"></script>
 </head>
+
 <body>
   <main>
-    <span>
+    
+    
 		<section>
-        <h1>PLAYER 1</h1>
+      <h4>PLAYER 1</h4>
         <h2 class="player1message"></h2>
         <div>
           <div id="0" class="card"></div>
-          <div id="1" class="card"></div>
+          <div id="1" class="card"></div>  
         </div>
-        
+        <grid>
+          <h3 class="player1bet">Current Bet</h3>
+          <div class="countdown"></div>
+          <h4 class="player1stack">Total Bankroll</h4>
+        </grid>
+
     </section>
+  
     <section>
-			<h1>PLAYER 2</h1>
-			<h2 class="player2message"></h2>
-			<div>
-				<div id="2" class="card"></div>
-        <div id="3" class="card"></div>
-			</div>
+      <h4>PLAYER 2</h4>
+        <h2 class="player2message"></h2>
+        <div>
+            <div id="2" class="card"></div>
+            <div id="3" class="card"></div>
+        </div>
+        <grid>
+            <h3 class="player2bet">Current Bet</h3>
+            <div class="countdown"></div>
+            <h4 class="player2stack">Total Bankroll</h4>
+        </grid>
 		</section>
-  </span>
-    <h3 class="totalbet" id="totalpot">Total pot: </h3>
-    <h1 class="message">The winner is </h1>
-  <section>
-      <div class="grid">
-        <div id="4" class="card"></div>
-        <div id="5" class="card"></div>
-        <div id="6" class="card"></div>
-        <div id="7" class="card"></div>
-        <div id="8" class="card"></div>
-  </div>  
-	</section>
+    <section>
+          <h3 class="totalbet" id="totalpot">Total pot: </h3>
+          <h1 class="message">The winner is </h1>
+      <section>
+          <div class="grid">
+            <div id="4" class="card"></div>
+            <div id="5" class="card"></div>
+            <div id="6" class="card"></div>
+            <div id="7" class="card"></div>
+            <div id="8" class="card"></div>
+          </div>  
+      </section>
+    </section>
+
 	</main>
 
-	    	<section>
-            <button id="call" >Call</button>
-            <button id="raise">Raise</button>
-            <button id="check">Check</button>		
-            <button id="fold">Fold</button>
-            <button id='reset'>Next hand</button>
-        </section>
-      
+	  <section>
+          <button id="call" >Call</button>
+          <button id="raise">Raise</button>
+          <button id="check">Check</button>		
+          <button id="fold">Fold</button>      
+          <button id='reset'>Next hand</button>
+    </section>
 
 </body>
 </html>
