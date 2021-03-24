@@ -230,7 +230,7 @@ const suitsLookup = {
 }
 
 /*----- define required variables (MVC app's state) -----*/
-
+let video = document.getElementById("videoToggle");
 let playerTurn = null
 // let shuffleCards = [];
 let player1Hand = [];
@@ -281,6 +281,15 @@ resetButton.addEventListener('click', initialize)
 
 /*----- functions-----*/
 initialize ();
+// videoFunction();
+
+function videoFunction() {
+    if (video.style.display === "none") {
+      video.style.display = "block";
+    } else {
+      video.style.display = "none";
+    }
+  }
 
 function initialize() {
     player1Hand = [];
