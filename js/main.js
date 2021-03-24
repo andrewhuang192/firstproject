@@ -404,7 +404,6 @@ function call() {
         }
         beepAudio.play();
         totalBet = player1Bet + player2Bet
-
         playerTurn = playerTurn + 1
         render();
         // countDown();
