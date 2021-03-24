@@ -34,14 +34,35 @@
 //         -check flush
 //         -ETC
 
+//Betting logic:
+
+//initialize()
+    // --resets player1bet and player2bet to $1
+    // --subtracts $1 from player1stack and player2Stack
+    // --totalpot is $2
+//--render()
+    // --gets player1bet/player2bet value and displays as HTML
+    // --gets player1stack/player2stack value displays as HTML
+    // --gets totalpot value displays as HTML
 // --Call function
+
+    // --adds $1 to player1bet if whoseTurn is $1
+    // --adds $1 to player2bet if whoseTurn is $2
+    // --subtracts $1 to player1stack if whoseTurn is $1
+    // --subtracts $1 to player2stack if whoseTurn is $2
+    // -adds $1 totalpot
 // --Fold function
 // --Raise function
+    // --adds $1 to player1bet if whoseTurn is $1
+    // --adds $1 to player2bet if whoseTurn is $2
+    // --subtracts $1 to player1stack if whoseTurn is $1
+    // --subtracts $1 to player2stack if whoseTurn is $2
+    // -adds $1 totalpot
 // --Check function
 // --reset function
 
-
 /*----- define required constants -----*/
+const beepAudio = new Audio('http://soundbible.com/mp3/Robot_blip-Marianne_Gagnon-120342607.mp3')
 
 const cardLookup = {
     '1': 'dA',
@@ -248,7 +269,7 @@ let resetButton = document.querySelector('#reset');
 let message = document.querySelector('.message');
 let player1Message = document.querySelector('.player1message');
 let player2Message = document.querySelector('.player2message');
-
+let countdownEl = document.querySelector('.countdown')
 
 /*----- event listeners -----*/
 callButton.addEventListener('click', call)
@@ -266,9 +287,9 @@ function initialize() {
     player2Hand = [];
     currentHand = [];
     flopBoard = [];
-    winner = null
+    winner = null 
     playerNumbers = [];
-    playerTurn = 1;
+    playerTurn = 0;
     whoseTurn = 1;
     // shuffle();
     deal();
@@ -289,13 +310,19 @@ function deal() {
 
 function showWhoseTurn() {
         player1Message.textContent = '';
-        player1Message.textContent = '';
-    if(whoseTurn = 1) {
+        player2Message.textContent = '';
+    if (playerTurn === 0) {
         player1Message.textContent = 'It is your turn!'
+        playerTurn = playerTurn + 1
     }
-    else {
+    else if (playerTurn % 2 == 0) {
         player2Message.textContent = 'It is your turn!'
     }
+    else {
+        player1Message.textContent = 'It is your turn!'
+    }
+        whoseTurn = whoseTurn * -1 
+        
 }
 
 function render() {
@@ -319,13 +346,13 @@ function render() {
             card.classList.add(currentHand[i]);
         }
     }
-    else if (7 < playerTurn) {
+    else if (7 < playerTurn < 9) {
         for (let i = 8; i < 9; i++) {
             let card  = cards[i];
             card.classList.add(currentHand[i]);
             buildArray();
-            buildSuits();
-            getWinner();   
+            buildSuits();  
+            // getWinner();
         }
     return
     }
@@ -333,13 +360,14 @@ function render() {
 
 function call() {
     if(playerTurn > 7) {
+        getWinner();
         return
     }
     else {
         player1Stack = player1Stack
-        playerTurn += 1
-        whoseTurn *= -1
+        playerTurn = playerTurn + 1
         render();
+        // countDown();
     }
 }
 
@@ -348,32 +376,33 @@ function raise() {
         return
     }
     else {
-    playerTurn += 1
-    whoseTurn *= -1
-    render();
+        playerTurn = playerTurn + 1
+        render();
+        // countDown();
     }
 }
 
 function check() {
     if(playerTurn > 7) {
+        getWinner();
         return
     }
     else {
-    playerTurn += 1
-    whoseTurn *= -1
-    render();
+        playerTurn = playerTurn + 1
+        render();
+        // countDown();
     }
 }
 
 function fold() {
     if(playerTurn > 7) {
+        getWinner();
         return
     }
     else {
-    playerTurn += 1
-    whoseTurn *= -1
-    getWinner();
-    render();
+        // playerTurn = playerTurn + 1
+        getWinner();
+        render();
     }
 }
 
@@ -409,7 +438,7 @@ function buildHand(x) {
     for(let i=0; i<2; i++) {
         handSuits.push(suitsLookup[currentHand[i]]); 
     } 
-    for(let i=4; i< 9; i++) { 
+    for(let i=4; i<9; i++) { 
         flopSuits.push(suitsLookup[currentHand[i]]);
     } 
 
@@ -417,8 +446,8 @@ function buildHand(x) {
     for (let a=0; a<3; a++) {
         if(flopSuits.includes(handSuits[a])) {
             x.push(handSuits[a])
-            const index = flopSuits.indexOf(handSuits[a]);
-            flopSuits.splice(index, 1);
+            // const index = flopSuits.indexOf(handSuits[a]);
+            // flopSuits.splice(index, 1);
         }
         else if(x[0] > x[1]) {
             for(let b = 0; b < 4; b++) {
@@ -440,7 +469,7 @@ function buildHand(x) {
             x.push(Math.max(...flopBoard));
         }
         x.sort((a,b) => b - a);
-        return x, flopBoard
+        return x
     }
 }
 
@@ -454,13 +483,14 @@ function buildArray() {
     for(let i=0; i< 9; i++) {
         playerNumbers.push(arrayLookup[currentHand[i]]);
     } 
-    for(let i=4; i< 9; i++) { 
-        flopBoard.push(arrayLookup[currentHand[i]]);
-    } 
     for(let i=0; i<2; i++) {
         player1Hand.push(arrayLookup[currentHand[i]]);
     } 
     for(let i=2; i<4; i++) { 
+        player2Hand.push(arrayLookup[currentHand[i]]);
+    } 
+    for(let i=4; i< 9; i++) { 
+        player1Hand.push(arrayLookup[currentHand[i]]);
         player2Hand.push(arrayLookup[currentHand[i]]);
     } 
     return player1Hand, player2Hand
@@ -470,13 +500,14 @@ function buildSuits() {
     for(let i=0; i< 9; i++) {
         playerSuits.push(suitsLookup[currentHand[i]]);
     } 
-    for(let i=4; i< 9; i++) { 
-        suitsBoard.push(suitsLookup[currentHand[i]]);
-    } 
     for(let i=0; i<2; i++) {
         player1Suits.push(suitsLookup[currentHand[i]]);
     } 
     for(let i=2; i<4; i++) { 
+        player2Suits.push(suitsLookup[currentHand[i]]);
+    } 
+    for(let i=4; i< 9; i++) { 
+        player1Suits.push(suitsLookup[currentHand[i]]);
         player2Suits.push(suitsLookup[currentHand[i]]);
     } 
     return player1Suits, player2Suits
@@ -606,7 +637,7 @@ function getWinner() {
         message.textContent = 'PLAYER ONE (1)'
     }
     else if (player2Hand.length > player1Hand.length) {
-        message.textContent = 'PLAYER ONE (1)'
+        message.textContent = 'PLAYER TWO (2)'
     }
     else if (player1Hand[0] > player2Hand[0]) {
         message.textContent = 'PLAYER ONE (1)'
@@ -615,3 +646,26 @@ function getWinner() {
         message.textContent = 'PLAYER TWO (2)'
     }
 }
+
+
+// function countDown() {
+//         let count = 10;
+//         beepAudio.play();
+//         countdownEl.textContent = count;
+//         countdownEl.style.border = '4px solid black';
+//         let timerId = setInterval(() => {
+//           count--;
+//           if (count) {
+//             beepAudio.play();
+//             countdownEl.textContent = count; 
+//           }
+          
+//           else {
+//             clearInterval(timerId)
+//             goAudio.play();
+//             countdownEl.textContent = '';
+//             countdownEl.style.border = '4px solid white';
+//           }
+//           check();
+//         }, 1000)
+//       }

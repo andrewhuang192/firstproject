@@ -2,6 +2,40 @@ html, * {
     font-family: helvetica;
     box-sizing: border-box;
 }
+
+nav {
+  display: flex;
+  flex-direction: row;
+  height:  50px;
+  /* background-color: #a2cbb6; */
+  font-size: 20px;
+  margin: 0auto;
+  /* flex-direction: row; */
+  color: #04035c;
+  justify-content: space-between;
+  align-self: center;
+  align-items: center;
+}
+
+nav div:hover {
+  color: white;
+}
+
+.nav-left {
+ display: flex;
+ /* justify-content: space-evenly; */
+ margin-left: 5px;
+}
+
+.nav-left-item {
+ margin: 10px;
+}
+
+.nav-right {
+ display: flex;
+ /* justify-content: space-evenly; */
+ margin-right: 5px;
+}
   
 body {
     height: 100vh;
@@ -9,21 +43,89 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-image: url("../pokerbackground.jpeg");
+    background-size:cover;
+    color: white;
 }  
-main {
-    display: flex;
-    flex-direction: column;
+
+iframe {
+  margin-bottom: 90px;
+
+}
+
+.selectvideo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  margin-bottom: 3px;
+}
+
+input {
+  width: 360px;
+  height: 30px;
+}
+
+.videobutton {
+  width: 100px;
+  height: 30px;
+}
+
+.page {
+    display: grid;
+    grid-row: 1;
+    grid-template-columns: 1fr 2fr 1fr;
     justify-content: center;
     align-items: center;
 }
 
-main section {
-    padding: 0px;
+.player1 {
+  /* display: flex;
+  flex-direction: row; */
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+
+.player2 {
+  /* display: flex;
+  flex-direction: row; */
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  margin-left: 60px;
+}
+
+.flop {
+  /* display: flex;
+  flex-direction: row; */
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+section h2 {
+  height: 30px;
+
 }
 
 section section {
   display: flexbox;
   flex-direction: row;
+}
+
+section h3 {
+  margin: 1px;
 }
 /* span section {
     display: flex;
@@ -40,9 +142,9 @@ main h4 {
     margin-bottom: 0px;
 }
 
-span {
-  display: grid;
-
+.countdown {
+    padding: 20px;
+    border-radius: 20px;
 }
 
 section h4 {
@@ -53,20 +155,19 @@ section h4 {
   margin: 0px;
 }
 
-div h3 {
+/* div h3 {
   display: inline-flex;
   flex-direction:row;
   justify-content: center;
   align-items: center;
-}
-
+} */
 
 .grid {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    height: 180px;
-    width: 560px;
+    height: 240px;
+    width: 620px;
     padding: 25px;
     border: 5px solid black;
     margin: 10px 0px;
@@ -75,6 +176,29 @@ div h3 {
     background-color: darkgreen;   
     border-color: burlywood
 }
+
+button {
+  background-color: white;
+  color: black;
+  width: 100px;
+  height: 30px;
+  max-width: 200px;
+  padding: 0px 0px;
+  border: 2px solid rgb(152, 155, 0);
+  border-radius: 6px;
+  margin-top: 5px;
+  font-size: 11px;
+  outline: none;
+  transition: background 0.5s ease-in-out;
+}
+
+button:hover {
+  background-color: black;
+  color: black;
+  cursor: pointer;
+  background: #cdced0e1;
+}
+
 
 /* @charset "UTF-8"; */
 .card {
@@ -85,8 +209,8 @@ div h3 {
   /* Set the card's dimensions, and size it relative to
      it's font size. */
   font-size: inherit;
-  width: 4.0em;
-  height: 5.5em;
+  width: 5.28em;
+  height: 7.26em;
   /* Add a default background color and border. */
   background-color: #fff;
   border-radius: 0.20em;

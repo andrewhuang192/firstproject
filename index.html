@@ -9,61 +9,74 @@
   <script defer src="js/main.js"></script>
 </head>
 
+<nav class="nav-left">
+  <div class="nav-left-item">HOME/EXIT</div>
+  <div class="nav-left-item">LOBBY</div>
+  <div class="nav-left-item">ADD FUNDS</div>
+  <div class="nav-right">LOG OUT</div>
+</nav>
+
 <body>
-  <main>
-    
-    
-		<section>
-      <h4>PLAYER 1</h4>
+  
+  <div class="selectvideo">
+        <input>
+        <!-- <button class="videobutton">Watch Video</button>  -->
+  </div>  
+  <iframe src="https://www.youtube.com/embed/PpFsVGYrMuY" width="680" height="480" allowfullscreen></iframe>
+  
+
+
+  <main> 
+  <grid class="page">
+		<section class="player1">
+        <h4>PLAYER 1</h4>
         <h2 class="player1message"></h2>
         <div>
-          <div id="0" class="card"></div>
-          <div id="1" class="card"></div>  
+              <div id="0" class="card"></div>
+              <div id="1" class="card"></div>  
         </div>
         <grid>
-          <h3 class="player1bet">Current Bet</h3>
-          <div class="countdown"></div>
-          <h4 class="player1stack">Total Bankroll</h4>
+              <h3 class="player1bet">Current Bet</h3>
+              <h4 class="player1stack">Total Bankroll</h4>
         </grid>
-
     </section>
   
-    <section>
-      <h4>PLAYER 2</h4>
+    <section class="player2">
+        <h4>PLAYER 2</h4>
         <h2 class="player2message"></h2>
         <div>
-            <div id="2" class="card"></div>
-            <div id="3" class="card"></div>
+              <div id="2" class="card"></div>
+              <div id="3" class="card"></div>
         </div>
         <grid>
-            <h3 class="player2bet">Current Bet</h3>
-            <div class="countdown"></div>
-            <h4 class="player2stack">Total Bankroll</h4>
+              <h3 class="player2bet">Current Bet</h3>
+              <h4 class="player2stack">Total Bankroll</h4>
         </grid>
 		</section>
-    <section>
+
+    <section class="flop">
           <h3 class="totalbet" id="totalpot">Total pot: </h3>
           <h1 class="message">The winner is </h1>
-      <section>
-          <div class="grid">
-            <div id="4" class="card"></div>
-            <div id="5" class="card"></div>
-            <div id="6" class="card"></div>
-            <div id="7" class="card"></div>
-            <div id="8" class="card"></div>
-          </div>  
-      </section>
+          <section>
+            <div class="grid">
+              <div id="4" class="card"></div>
+              <div id="5" class="card"></div>
+              <div id="6" class="card"></div>
+              <div id="7" class="card"></div>
+              <div id="8" class="card"></div>
+              <div class="countdown"></div>
+            </div>
     </section>
-
+          <section>
+              <button id="call" >Call</button>
+              <button id="raise">Raise</button>
+              <button id="check">Check</button>		
+              <button id="fold">Fold</button>      
+              <button id='reset'>Next hand</button>
+          </section>
+    </section>
+  </grid>
 	</main>
-
-	  <section>
-          <button id="call" >Call</button>
-          <button id="raise">Raise</button>
-          <button id="check">Check</button>		
-          <button id="fold">Fold</button>      
-          <button id='reset'>Next hand</button>
-    </section>
 
 </body>
 </html>
