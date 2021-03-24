@@ -45,11 +45,11 @@
     // --gets player1stack/player2stack value displays as HTML
     // --gets totalpot value displays as HTML
 // --Call function
-
-    // --adds $1 to player1bet if whoseTurn is $1
-    // --adds $1 to player2bet if whoseTurn is $2
-    // --subtracts $1 to player1stack if whoseTurn is $1
-    // --subtracts $1 to player2stack if whoseTurn is $2
+    //--if currentBet !== player1Bet
+    // --adds $(currentBet = player1Bet) to player1bet if whoseTurn is 1
+    // --adds $1 to player2bet if whoseTurn is -1
+    // --subtracts $1 to player1stack if whoseTurn is 1
+    // --subtracts $1 to player2stack if whoseTurn is -1
     // -adds $1 totalpot
 // --Fold function
 // --Raise function
@@ -246,9 +246,11 @@ let playerMessage = null
 let whoseTurn = null
 let winner = null
 
-let player1Stack = null
-let player2Stack = null
+
+let player1Stack = 100
+let player2Stack = 100
 let totalPot = null
+let currentBet = null
 let player1Bet = null
 let player2Bet = null
 
@@ -269,6 +271,11 @@ let resetButton = document.querySelector('#reset');
 let message = document.querySelector('.message');
 let player1Message = document.querySelector('.player1message');
 let player2Message = document.querySelector('.player2message');
+let player1RenderBet = document.querySelector('.player1bet');
+let player1RenderStack = document.querySelector('.player1stack');
+let player2RenderBet = document.querySelector('.player2bet');
+let player2RenderStack = document.querySelector('.player2stack');
+let totalRenderPot = document.querySelector('.totalbet');
 let countdownEl = document.querySelector('.countdown')
 
 /*----- event listeners -----*/
@@ -301,8 +308,15 @@ function initialize() {
     playerTurn = 0;
     whoseTurn = 1;
     // shuffle();
+    currentBet = 1;
+    player1Bet = 0.5;
+    player2Bet = 1;
+    player1Stack = player1Stack - player1Bet;
+    player2Stack = player2Stack - player2Bet;
+    totalPot = player1Bet + player2Bet
     deal();
     render();
+    // renderBets();
 }
 
 // function shuffle() {
@@ -324,6 +338,11 @@ function showWhoseTurn() {
         player1Message.textContent = 'It is your turn!'
         playerTurn = playerTurn + 1
     }
+    else if (playerTurn > 8) {
+        player1Message.textContent = null
+        player2Message.textContent = null
+        return
+    }
     else if (playerTurn % 2 == 0) {
         player2Message.textContent = 'It is your turn!'
     }
@@ -342,6 +361,7 @@ function render() {
             let card  = cards[i];
             card.classList.add(currentHand[i]);
         }
+
     }
     else if(playerTurn < 5) {
         for (let i = 4; i < 7; i++) {
@@ -365,6 +385,11 @@ function render() {
         }
     return
     }
+    player1RenderBet.textContent = 'Current Bet: $' + player1Bet
+    player2RenderBet.textContent = 'Current Bet: $' + player2Bet
+    player1RenderStack.textContent = 'Total Bankroll: $' + player1Stack
+    player2RenderStack.textContent = 'Total Bankroll: $' + player2Stack
+    totalRenderPot.textContent = 'Total Pot: ' + totalPot
 }
 
 function call() {
@@ -373,7 +398,13 @@ function call() {
         return
     }
     else {
-        player1Stack = player1Stack
+        if (whoseTurn === 1) {
+
+            player1Stack = player1Stack -1
+        }
+        beepAudio.play();
+        totalBet = player1Bet + player2Bet
+
         playerTurn = playerTurn + 1
         render();
         // countDown();
@@ -385,6 +416,9 @@ function raise() {
         return
     }
     else {
+        beepAudio.play();
+        totalBet = player1Bet + player2Bet
+
         playerTurn = playerTurn + 1
         render();
         // countDown();
@@ -397,6 +431,9 @@ function check() {
         return
     }
     else {
+        beepAudio.play();
+        totalBet = player1Bet + player2Bet
+
         playerTurn = playerTurn + 1
         render();
         // countDown();
@@ -409,6 +446,8 @@ function fold() {
         return
     }
     else {
+        totalBet = player1Bet + player2Bet
+
         // playerTurn = playerTurn + 1
         getWinner();
         render();

@@ -61,7 +61,7 @@ body {
 }  
 
 #videoToggle {
-  margin-bottom: 90px;
+  margin-bottom: 40px;
 }
 
 .selectvideo {
@@ -127,7 +127,6 @@ input {
 
 section h2 {
   height: 30px;
-
 }
 
 section section {
@@ -135,9 +134,16 @@ section section {
   flex-direction: row;
 }
 
-section h3 {
+section h2 {
   margin: 1px;
 }
+
+section grid h2 {
+  color: #04035c;
+}
+
+
+
 /* span section {
     display: flex;
     flex-direction: row;
