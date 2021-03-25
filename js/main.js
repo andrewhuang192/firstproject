@@ -243,7 +243,7 @@ let suitsBoard = [];
 let player1Suits = [];
 let player2Suits = [];
 let playerMessage = null;
-// let whoseTurn = null;
+let whoseTurn = null;
 let winner = null;
 let round = 1;
 
@@ -251,7 +251,7 @@ let round = 1;
 let player1Stack = 100;
 let player2Stack = 100;
 let totalPot = 0;
-let currentBet = 0;
+let currentBet = 1;
 let player1Bet = 0;
 let player2Bet = 0;
 let folded = 0;
@@ -308,15 +308,15 @@ function initialize() {
     winner = null 
     message.textContent = 'The winner is'
     playerNumbers = [];
-    playerTurn = 0;
-    // whoseTurn = 1;
+    playerTurn = 1;
+    whoseTurn = 1;
     // shuffle();
     deal();
-    render();
-    currentBet = 1;
-    player1Bet = 1;
-    player2Bet = 1;
+    currentBet = 0;
+    player1Bet = 0;
+    player2Bet = 0;
     totalPot = player1Bet + player2Bet
+    render();
     // player1Stack = player1Stack - player1Bet;
     // player2Stack = player2Stack - player2Bet;
     // renderBets();
@@ -331,35 +331,40 @@ function deal() {
 }
 
 function nextRound() {
+        playerTurn = playerTurn + 1
+        whoseTurn = 1;
         currentBet = 0;
         player1Bet = 0;
         player2Bet = 0;
 }
 
 function showWhoseTurn() {
-        // whoseTurn = whoseTurn * -1 
-    if (playerTurn === 0) {
-        player1Message.textContent = 'It is your turn!'
-        player2RenderBet.style.animation = 'blink 120s step-end infinite alternate'
-        player1RenderBet.style.animation = 'blink 0.5s step-end infinite alternate'
-        playerTurn = playerTurn + 1
-    }
-    else if (playerTurn > 8) {
-        player1Message.textContent = null
-        player2Message.textContent = null
-        return
-    }
-    else if (playerTurn % 2 == 0) {
+    // if (playerTurn === 0) {
+    //     player1Message.textContent = 'It is your turn!'
+    //     player2RenderBet.style.animation = 'blink 120s step-end infinite alternate'
+    //     player1RenderBet.style.animation = 'blink 0.5s step-end infinite alternate'
+    //     playerTurn = playerTurn + 1
+    // }
+    // else 
+    // if (playerTurn > 4) {
+    //     player1Message.textContent = null
+    //     player2Message.textContent = null
+    //     return
+    // }
+    if (whoseTurn === -1 && playerTurn < 5) {
         player2Message.textContent = 'It is your turn!'
         player2RenderBet.style.animation = 'blink 0.5s step-end infinite alternate'
         player1Message.textContent = ''
         player1RenderBet.style.animation = null
     }
-    else {
+    else if (whoseTurn === 1 && playerTurn < 5) {
         player1Message.textContent = 'It is your turn!'
         player1RenderBet.style.animation = 'blink 0.5s step-end infinite alternate'
         player2RenderBet.style.animation = null
         player2Message.textContent = ''
+    }
+    else {
+        return
     }
     // return whoseTurn
 }
@@ -370,32 +375,36 @@ function render() {
     // player2Bet = 0;
     totalPot = player1Bet + player2Bet
     showWhoseTurn();
+    if (playerTurn > 4 || folded === 1) {
+        getWinner();
+        return
+    }
     if (currentBet === 0) {
-        callButton.innerHTML = 'Bet'
+            callButton.innerHTML = 'Bet'
     }
-    if (currentBet !== 0) {
-        callButton.innerHTML = 'Call'
+    else {
+            callButton.innerHTML = 'Call'
     }
-    if(playerTurn < 3) {
+    if (playerTurn === 1) {
         for (let i = 0; i < 4; i++) {
             let card  = cards[i];
             card.classList.add(currentHand[i]);
         }
     }
-    else if(playerTurn < 5) {
-        for (let i = 4; i < 7; i++) {
+    else if(playerTurn === 2) {
+        for (let i = 0; i < 7; i++) {
             let card  = cards[i];
             card.classList.add(currentHand[i]);
         }
     }
-    else if(playerTurn < 7) {
+    else if(playerTurn === 3 ) {
         for (let i = 0; i < 8; i++) {
             let card  = cards[i];
             card.classList.add(currentHand[i]);
         }
     }
-    else if (7 < playerTurn < 9) {
-        for (let i = 8; i < 9; i++) {
+    else if (playerTurn === 4) {
+        for (let i = 0; i < 9; i++) {
             let card  = cards[i];
             card.classList.add(currentHand[i]);
             buildArray();
@@ -404,99 +413,107 @@ function render() {
         }
     }
     else {
-            return
+        return
     }
-    player1RenderBet.textContent = 'Current Bet: $' + player1Bet
-    player2RenderBet.textContent = 'Current Bet: $' + player2Bet
+    if (currentBet > 0) {
+        player1RenderBet.textContent = 'Current Bet: $' + currentBet
+        player2RenderBet.textContent = 'Current Bet: $' + currentBet
+    }
+    else {
+        player1RenderBet.textContent = 'Current Bet: $' + player1Bet
+        player2RenderBet.textContent = 'Current Bet: $' + player2Bet
+    }
     player1RenderStack.textContent = 'Total Bankroll: $' + player1Stack
     player2RenderStack.textContent = 'Total Bankroll: $' + player2Stack
     totalRenderPot.textContent = 'Total Pot: $' + totalPot
 }
 
 function call() {
-    if(playerTurn > 7 || folded === 1) {
+    if (playerTurn > 4 || folded === 1) {
         getWinner();
         return
     }
-    if (currentBet === 0 ) {
-        player1Bet = 1
-        currentBet = 1
+    whoseTurn = whoseTurn * -1 
+    if (currentBet === 0) currentBet = 1;
+    if (player1Bet < currentBet) {
+        player1Bet = currentBet
         player1Stack = player1Stack - player1Bet
+        if (player2Bet === currentBet) {
+            nextRound();  
+        }
         render();
+        return
     }
-    else {
-        if (playerTurn % 2 !== 0) {
-            player1Bet = player1Bet + (currentBet - player2Bet)
-            currentBet = player1Bet
-
-            player1Stack = player1Stack - player1Bet
-           
-            
-            render();
+    else if (player2Bet < currentBet) {
+        player2Bet = currentBet
+        player2Stack = player2Stack - player2Bet
+        if (player1Bet === currentBet) {
+            nextRound();  
         }
-        else if (playerTurn % 2 == 0) {
-            player2Bet = player2Bet + (currentBet - player2Bet)
-            currentBet = player1Bet
-
-            player2Stack = player2Stack - player2Bet
-            // currentBet = 0;
-            // player1Bet = 0;
-            // player2Bet = 0;
-            render();
-        }
+        render();
+        return
     }
     beepAudio.play();
     totalPot = player1Bet + player2Bet
-    playerTurn = playerTurn + 1
-    nextRound();
     render();
     // countDown();
     return player1Bet, player1Stack, player2Bet, player2Stack
 }
 
-function raise() {
-    if(playerTurn > 7 || folded === 1) {
-        return
-    }
-    else if (whoseTurn === 1) {
-        player1Bet = 2
-        player1Stack = player1Stack - player1Bet
-        currentBet = 2
-        render();
-    }
-    else if (whoseTurn === -1) {
-        player2Bet = 2
-        player2Stack = player2Stack - player2Bet 
-        render(); 
-    }
-    beepAudio.play();
-        totalPot = player1Bet + player2Bet
-        playerTurn = playerTurn + 1
-        render();
-    return player1Bet, player2Stack, player2Bet, player2Stack
-}
+// function raise() {
+    // whoseTurn = whoseTurn * -1 
+
+//     if(playerTurn > 4 || folded === 1) {
+//         return
+//     }
+//     else if (whoseTurn === 1) {
+//         player1Bet = 2
+//         player1Stack = player1Stack - player1Bet
+//         currentBet = 2
+//         render();
+//     }
+//     else if (whoseTurn === -1) {
+//         player2Bet = 2
+//         player2Stack = player2Stack - player2Bet 
+//         render(); 
+//     }
+//     beepAudio.play();
+//         totalPot = player1Bet + player2Bet
+//         playerTurn = playerTurn + 1
+//         render();
+//     return player1Bet, player2Stack, player2Bet, player2Stack
+// }
 
 function check() {
-    if(playerTurn > 7 || folded === 1) {
+    if (playerTurn > 4 || folded === 1) {
         getWinner();
         return
     }
-    else if (player1Bet === player2Bet) {
+    if (currentBet - player1Bet > 0 || currentBet - player2Bet > 0) {
+        return
+    }
+    else if (player1Bet === player2Bet && whoseTurn === -1) {
+        whoseTurn = whoseTurn * -1 
         beepAudio.play();
         totalPot = player1Bet + player2Bet
-        playerTurn = playerTurn + 1
         render();
+        nextRound();
         // countDown();
     }
     else {
+        whoseTurn = whoseTurn * -1 
+        render();
         return
     }
-    
-    
+    beepAudio.play();
+    totalPot = player1Bet + player2Bet
+    render();
+    // countDown();
+    return player1Bet, player1Stack, player2Bet, player2Stack
 }
 
 function fold() {
-    if (playerTurn > 7 || folded === 1) {
+    if (playerTurn > 4 || folded === 1) {
         getWinner();
         return
     }
@@ -519,7 +536,6 @@ function fold() {
         // player2Message.textContent = '';
         // playerTurn = playerTurn + 1
         getWinner();
-        
     }
 }
 
@@ -548,7 +564,6 @@ function fold() {
 
 //check for suits in suitsBoard, add to playerSuits - let playerSuits = player1Suits
 function buildHand(x) {
-
     //get temporary arrays for suits in order to build hand with suits first
     let handSuits = [];
     let flopSuits = [];
@@ -558,7 +573,6 @@ function buildHand(x) {
     for(let i=4; i<9; i++) { 
         flopSuits.push(suitsLookup[currentHand[i]]);
     } 
-
     //Now we start building the hand here 
     for (let a=0; a<3; a++) {
         if(flopSuits.includes(handSuits[a])) {
@@ -751,19 +765,22 @@ function getWinner() {
     checkPair(player1Hand);
     checkPair(player2Hand);
     if (player1Hand.length > player2Hand.length) {
+        winner = 1;
         message.textContent = 'PLAYER ONE (1)'
     }
     else if (player2Hand.length > player1Hand.length) {
+        winner = -1;
         message.textContent = 'PLAYER TWO (2)'
     }
     else if (player1Hand[0] > player2Hand[0]) {
+        winner = 1;
         message.textContent = 'PLAYER ONE (1)'
     }
     else {
+        winner = -1;
         message.textContent = 'PLAYER TWO (2)'
     }
 }
-
 
 // function countDown() {
 //         let count = 10;
@@ -776,7 +793,6 @@ function getWinner() {
 //             beepAudio.play();
 //             countdownEl.textContent = count; 
 //           }
-          
 //           else {
 //             clearInterval(timerId)
 //             goAudio.play();
