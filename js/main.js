@@ -310,16 +310,12 @@ function initialize() {
     playerNumbers = [];
     playerTurn = 1;
     whoseTurn = 1;
-    // shuffle();
     deal();
     currentBet = 0;
     player1Bet = 0;
     player2Bet = 0;
-    totalPot = player1Bet + player2Bet
+    totalPot = 0;
     render();
-    // player1Stack = player1Stack - player1Bet;
-    // player2Stack = player2Stack - player2Bet;
-    // renderBets();
 }
 
 
@@ -331,6 +327,7 @@ function deal() {
 }
 
 function nextRound() {
+        totalPot = totalPot + player1Bet + player2Bet
         playerTurn = playerTurn + 1
         whoseTurn = 1;
         currentBet = 0;
@@ -339,18 +336,6 @@ function nextRound() {
 }
 
 function showWhoseTurn() {
-    // if (playerTurn === 0) {
-    //     player1Message.textContent = 'It is your turn!'
-    //     player2RenderBet.style.animation = 'blink 120s step-end infinite alternate'
-    //     player1RenderBet.style.animation = 'blink 0.5s step-end infinite alternate'
-    //     playerTurn = playerTurn + 1
-    // }
-    // else 
-    // if (playerTurn > 4) {
-    //     player1Message.textContent = null
-    //     player2Message.textContent = null
-    //     return
-    // }
     if (whoseTurn === -1 && playerTurn < 5) {
         player2Message.textContent = 'It is your turn!'
         player2RenderBet.style.animation = 'blink 0.5s step-end infinite alternate'
@@ -370,11 +355,10 @@ function showWhoseTurn() {
 }
 
 function render() {
-    // currentBet = 0;
-    // player1Bet = 0;
-    // player2Bet = 0;
-    totalPot = player1Bet + player2Bet
+    // totalPot = totalPot + player1Bet + player2Bet
     showWhoseTurn();
+    totalRenderPot.textContent = 'Total Pot: $' + totalPot
+
     if (playerTurn > 4 || folded === 1) {
         getWinner();
         return
@@ -425,7 +409,6 @@ function render() {
     }
     player1RenderStack.textContent = 'Total Bankroll: $' + player1Stack
     player2RenderStack.textContent = 'Total Bankroll: $' + player2Stack
-    totalRenderPot.textContent = 'Total Pot: $' + totalPot
 }
 
 function call() {
@@ -438,6 +421,7 @@ function call() {
     if (player1Bet < currentBet) {
         player1Bet = currentBet
         player1Stack = player1Stack - player1Bet
+        // totalPot = totalPot + player1Bet + player2Bet
         if (player2Bet === currentBet) {
             nextRound();  
         }
@@ -447,22 +431,21 @@ function call() {
     else if (player2Bet < currentBet) {
         player2Bet = currentBet
         player2Stack = player2Stack - player2Bet
+        // totalPot = totalPot + player1Bet + player2Bet
         if (player1Bet === currentBet) {
             nextRound();  
         }
         render();
         return
     }
-    beepAudio.play();
-    totalPot = player1Bet + player2Bet
+    // beepAudio.play();
+    totalPot = totalPot + player1Bet + player2Bet
     render();
-    // countDown();
     return player1Bet, player1Stack, player2Bet, player2Stack
 }
 
 // function raise() {
     // whoseTurn = whoseTurn * -1 
-
 //     if(playerTurn > 4 || folded === 1) {
 //         return
 //     }
@@ -477,8 +460,8 @@ function call() {
 //         player2Stack = player2Stack - player2Bet 
 //         render(); 
 //     }
-//     beepAudio.play();
-//         totalPot = player1Bet + player2Bet
+    //     beepAudio.play();
+//         totalPot = totalPot + player1Bet + player2Bet
 //         playerTurn = playerTurn + 1
 //         render();
 //     return player1Bet, player2Stack, player2Bet, player2Stack
@@ -494,8 +477,8 @@ function check() {
     }
     else if (player1Bet === player2Bet && whoseTurn === -1) {
         whoseTurn = whoseTurn * -1 
-        beepAudio.play();
-        totalPot = player1Bet + player2Bet
+        // beepAudio.play();
+        // totalPot = totalPot + player1Bet + player2Bet
         render();
         nextRound();
         // countDown();
@@ -505,10 +488,9 @@ function check() {
         render();
         return
     }
-    beepAudio.play();
-    totalPot = player1Bet + player2Bet
+    // beepAudio.play();
+    // totalPot = totalPot + player1Bet + player2Bet
     render();
-    // countDown();
     return player1Bet, player1Stack, player2Bet, player2Stack
 }
 
@@ -517,24 +499,10 @@ function fold() {
         getWinner();
         return
     }
-    // if (playerTurn < 8) {
-    //     playerTurn = 9
-    //     beepAudio.play();
-    //     totalPot = player1Bet + player2Bet
-    //     // player1Message.textContent = '';
-    //     // player2Message.textContent = '';
-    //     // playerTurn = playerTurn + 1
-    //     getWinner();
-    //     render();
-    // }
     else {
         folded = 1;
-        // playerTurn = 9
-        beepAudio.play();
-        totalPot = player1Bet + player2Bet
-        // player1Message.textContent = '';
-        // player2Message.textContent = '';
-        // playerTurn = playerTurn + 1
+        // beepAudio.play();
+        totalPot = totalPot + player1Bet + player2Bet
         getWinner();
     }
 }
@@ -603,12 +571,6 @@ function buildHand(x) {
         return x
     }
 }
-
-// for(let i=0; i<3; i++) {
-//     if (suitsBoard.includes(x[i])) {
-//         x[i] = suitsLookup[x[i]]
-//         x.push(x[i]) 
-//     } 
 
 function buildArray() {
     for(let i=0; i< 9; i++) {
@@ -776,29 +738,37 @@ function getWinner() {
         winner = 1;
         message.textContent = 'PLAYER ONE (1)'
     }
+    else if (player1Hand[0] < player2Hand[0]) {
+        winner = -1;
+        message.textContent = 'PLAYER TWO (2)'
+    }
+    else if (player1Hand[1] > player2Hand[1]) {
+        winner = 1;
+        message.textContent = 'PLAYER ONE (1)'
+    }
     else {
         winner = -1;
         message.textContent = 'PLAYER TWO (2)'
     }
 }
 
-// function countDown() {
-//         let count = 10;
-//         beepAudio.play();
-//         countdownEl.textContent = count;
-//         countdownEl.style.border = '4px solid black';
-//         let timerId = setInterval(() => {
-//           count--;
-//           if (count) {
-//             beepAudio.play();
-//             countdownEl.textContent = count; 
-//           }
-//           else {
-//             clearInterval(timerId)
-//             goAudio.play();
-//             countdownEl.textContent = '';
-//             countdownEl.style.border = '4px solid white';
-//           }
-//           check();
-//         }, 1000)
-//       }
+function countDown() {
+        let count = 10;
+        // beepAudio.play();
+        countdownEl.textContent = count;
+        countdownEl.style.border = '4px solid black';
+        let timerId = setInterval(() => {
+          count--;
+          if (count) {
+            // beepAudio.play();
+            countdownEl.textContent = count; 
+          }
+          else {
+            clearInterval(timerId)
+            // goAudio.play();
+            countdownEl.textContent = '';
+            countdownEl.style.border = '4px solid white';
+          }
+          check();
+        }, 1000)
+      }
