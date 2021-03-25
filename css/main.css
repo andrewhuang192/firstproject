@@ -21,7 +21,16 @@
       grid-column: 1 / 4 ;
   }
 
-  nav div:hover {
+  nav li a {
+    color: #04035c;
+    text-decoration: none;
+  }
+
+  nav li a:hover {
+    color: white;
+  }
+
+  nav li:hover {
     color: white;
   }
 
@@ -144,10 +153,6 @@
   @keyframes blink { 
     90% { color: black} 
   }
-
-  /* #bet {
-      animation: null;
-  } */
 
   section grid h2:hover {
     color: #04035c;

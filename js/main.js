@@ -233,6 +233,8 @@ const suitsLookup = {
 let video = document.getElementById("videoToggle");
 let playerTurn = null
 // let shuffleCards = [];
+let flopSuits = [];
+let handSuits = [];
 let player1Hand = [];
 let player2Hand = [];
 let currentHand = [];
@@ -246,7 +248,14 @@ let playerMessage = null;
 let whoseTurn = null;
 let winner = null;
 let round = 1;
-
+let club1Count = 0;
+let spade1Count = 0;
+let heart1Count = 0;
+let diamond1Count = 0;
+let club2Count = 0;
+let spade2Count = 0;
+let heart2Count = 0;
+let diamond2Count = 0;
 
 let player1Stack = 100;
 let player2Stack = 100;
@@ -255,6 +264,7 @@ let currentBet = 1;
 let player1Bet = 0;
 let player2Bet = 0;
 let folded = 0;
+let count = 0;
 
 /*----- store HTML elements to use in functions and event listeners -----*/
 // let playArea 
@@ -301,13 +311,18 @@ function videoFunction() {
   }
 
 function initialize() {
+    handSuits = [];
+    flopSuits = [];
     player1Hand = [];
     player2Hand = [];
+    player1Suits = [];
+    player2Suits = [];
     currentHand = [];
     flopBoard = [];
     winner = null 
     message.textContent = 'The winner is'
     playerNumbers = [];
+    playerSuits = [];
     playerTurn = 1;
     whoseTurn = 1;
     deal();
@@ -351,7 +366,6 @@ function showWhoseTurn() {
     else {
         return
     }
-    // return whoseTurn
 }
 
 function render() {
@@ -391,8 +405,8 @@ function render() {
         for (let i = 0; i < 9; i++) {
             let card  = cards[i];
             card.classList.add(currentHand[i]);
-            buildArray();
-            buildSuits();  
+            // buildArray();
+            // buildSuits();  
             // getWinner();
         }
     }
@@ -413,9 +427,11 @@ function render() {
 
 function call() {
     if (playerTurn > 4 || folded === 1) {
-        getWinner();
+        // getWinner();
         return
     }
+        beepAudio.play();
+
     whoseTurn = whoseTurn * -1 
     if (currentBet === 0) currentBet = 1;
     if (player1Bet < currentBet) {
@@ -438,7 +454,6 @@ function call() {
         render();
         return
     }
-    // beepAudio.play();
     totalPot = totalPot + player1Bet + player2Bet
     render();
     return player1Bet, player1Stack, player2Bet, player2Stack
@@ -469,9 +484,11 @@ function call() {
 
 function check() {
     if (playerTurn > 4 || folded === 1) {
-        getWinner();
+        // getWinner();
         return
     }
+        beepAudio.play();
+
     if (currentBet - player1Bet > 0 || currentBet - player2Bet > 0) {
         return
     }
@@ -488,7 +505,6 @@ function check() {
         render();
         return
     }
-    // beepAudio.play();
     // totalPot = totalPot + player1Bet + player2Bet
     render();
     return player1Bet, player1Stack, player2Bet, player2Stack
@@ -496,7 +512,7 @@ function check() {
 
 function fold() {
     if (playerTurn > 4 || folded === 1) {
-        getWinner();
+        // getWinner();
         return
     }
     else {
@@ -531,45 +547,53 @@ function fold() {
 
 
 //check for suits in suitsBoard, add to playerSuits - let playerSuits = player1Suits
+function buildFlush() {
+    club1Count = player1Suits.filter(suit => suit === 4)
+    spade1Count = player1Suits.filter(suit => suit === 3)
+    heart1Count = player1Suits.filter(suit => suit === 2)
+    diamond1Count = player1Suits.filter(suit => suit === 1)
+    club2Count = player2Suits.filter(suit => suit === 4)
+    spade2Count = player2Suits.filter(suit => suit === 3)
+    heart2Count = player2Suits.filter(suit => suit === 2)
+    diamond2Count = player2Suits.filter(suit => suit === 1)
+}
+
 function buildHand(x) {
-    //get temporary arrays for suits in order to build hand with suits first
-    let handSuits = [];
-    let flopSuits = [];
-    for(let i=0; i<2; i++) {
-        handSuits.push(suitsLookup[currentHand[i]]); 
-    } 
-    for(let i=4; i<9; i++) { 
-        flopSuits.push(suitsLookup[currentHand[i]]);
-    } 
-    //Now we start building the hand here 
-    for (let a=0; a<3; a++) {
-        if(flopSuits.includes(handSuits[a])) {
-            x.push(handSuits[a])
-            // const index = flopSuits.indexOf(handSuits[a]);
-            // flopSuits.splice(index, 1);
-        }
-        else if(x[0] > x[1]) {
-            for(let b = 0; b < 4; b++) {
-                if (flopBoard[b] = x[0]) {
-                    x.push(x[0])
+ for (let i = 0; i < 3; i++) {   
+        if(x[0] > x[1]) {
+                for(let a = 4; a < 9; a++) {
+                    if (playerNumbers[a] = x[0]) {
+                        x.push(x[0])
+                    }
+                    else {
+                        for(let a = 4; a < 9; a++) {
+                            if (playerNumbers[a] = x[1]) {
+                                x.push(x[1])
+                            }
+                        }
+                    }
                 }
-                else return
-            }
         }
-        else if(x[0] < x[1]) {
-            for(let c = 0; c < 4; c++) {
-                if (flopBoard[c] = x[1]) {
-                    x.push(x[1])
+        if (x[0] > x[1]) {
+                for(let c = 4; c < 9; c++) {
+                    if (playerNumbers[c] > x[0]) {
+                        x.push(playerNumbers[c])
+                    }
+                    else {
+                        for(let d = 4; d < 9; d++) {
+                            if (playerNumbers[d] > x[1]) {
+                                x.push(playerNumbers[d])
+                            }
+                        }
+                    }
                 }
-                else return
-            }
         }
         else {
             x.push(Math.max(...flopBoard));
         }
-        x.sort((a,b) => b - a);
         return x
     }
+    x.sort((a,b) => b - a);
 }
 
 function buildArray() {
@@ -582,11 +606,11 @@ function buildArray() {
     for(let i=2; i<4; i++) { 
         player2Hand.push(arrayLookup[currentHand[i]]);
     } 
-    for(let i=4; i< 9; i++) { 
-        player1Hand.push(arrayLookup[currentHand[i]]);
-        player2Hand.push(arrayLookup[currentHand[i]]);
-    } 
-    return player1Hand, player2Hand
+    // for(let i=4; i< 9; i++) { 
+    //     player1Hand.push(arrayLookup[currentHand[i]]);
+    //     player2Hand.push(arrayLookup[currentHand[i]]);
+    // } 
+    return player1Hand, player2Hand, playerNumbers
 }
 
 function buildSuits() {
@@ -603,7 +627,7 @@ function buildSuits() {
         player1Suits.push(suitsLookup[currentHand[i]]);
         player2Suits.push(suitsLookup[currentHand[i]]);
     } 
-    return player1Suits, player2Suits
+    return player1Suits, player2Suits, playerSuits
 }
 
 //We will run x=player1Hand and x=player2Hand
@@ -665,7 +689,7 @@ function checkFullHouse(x) {
     console.log('fullHouse' + fullHouse)
 }
 
-function checkStraight() {
+function checkStraight(x) {
     let straight = [];
     for (let i = 0; i < player1Hand.length; i++) {
         if (player1Hand[i+4] - player1Hand[i] === 4) {
@@ -694,7 +718,7 @@ function checkFlush(x) {
             flush.push(x[i], x[i+1], x[x+2], x[x+3], x[x+4]);
         }
         else {
-            return flush
+            return 
         }
     });    
     if (flush.length === 5) {
@@ -716,6 +740,9 @@ function checkStraightFlush() {
 
 function getWinner() {
     console.log('game over');
+    buildArray();
+    buildSuits(); 
+    buildFlush();
     buildHand(player1Hand);
     buildHand(player2Hand);
     checkFullHouse(player1Hand);
