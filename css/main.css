@@ -7,16 +7,16 @@
       display: flex;
       align-items: flex-start;
   } */
-
+ 
   header nav {
       display: flex;
       flex-direction: row;
       height:  50px;
       /* background-color: #a2cbb6; */
       font-size: 20px;
-      margin: 0auto;
+      margin: 480px;;
       color: #04035c;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       grid-column: 1 / 4 ;
   }
@@ -26,9 +26,9 @@
   }
 
   .nav-left {
-      display: ;
+      display: flex;
       /* justify-content: space-evenly; */
-      margin-left: 5px;
+      margin-left: 320px;
       /* max-width: 80%; */
       margin-top: 1px;
       margin-bottom: 20p;
@@ -36,17 +36,20 @@
   }
 
   .nav-left-item {
-      margin: 10px;
+      display: flex;
+      margin: 15px;
+      margin-top: 5px;
       align-items: flex-start;
       justify-content: space-between;
   }
 
   .nav-right {
       display: flex;
+      display: row;
       /* justify-content: space-evenly; */
       margin-right: 5px;
-      margin-left: 40px;
-      align-items: flex-end;
+      margin-left: 680px;
+      align-items: row;
   }
     
   body {
@@ -138,18 +141,22 @@
     margin: 1px;
   }
 
-  section grid h4 {
-    color: white;
+  @keyframes blink { 
+    90% { color: black} 
   }
 
-
-
-  /* span section {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
+  /* #bet {
+      animation: null;
   } */
+
+  section grid h2:hover {
+    color: #04035c;
+  }
+
+  section grid h4 {
+    color: white;
+
+  }
 
   main h4 {
       display: flex;
@@ -175,9 +182,9 @@
     
   }
 
-  section grid {
-    /* background-color: rgb(29, 109, 36); */
-  }
+  /* section grid { 
+   background-color: rgb(29, 109, 36);
+  } */
 
   /* div h3 {
     display: inline-flex;

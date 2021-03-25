@@ -243,8 +243,9 @@ let suitsBoard = [];
 let player1Suits = [];
 let player2Suits = [];
 let playerMessage = null;
-let whoseTurn = null;
+// let whoseTurn = null;
 let winner = null;
+let round = 1;
 
 
 let player1Stack = 100;
@@ -253,6 +254,7 @@ let totalPot = 0;
 let currentBet = 0;
 let player1Bet = 0;
 let player2Bet = 0;
+let folded = 0;
 
 /*----- store HTML elements to use in functions and event listeners -----*/
 // let playArea 
@@ -304,25 +306,22 @@ function initialize() {
     currentHand = [];
     flopBoard = [];
     winner = null 
+    message.textContent = 'The winner is'
     playerNumbers = [];
     playerTurn = 0;
-    whoseTurn = 1;
+    // whoseTurn = 1;
     // shuffle();
-    currentBet = 1;
-    player1Bet = 0.5;
-    player2Bet = 1;
-    // player1Stack = player1Stack - player1Bet;
-    // player2Stack = player2Stack - player2Bet;
-    totalPot = player1Bet + player2Bet
     deal();
     render();
+    currentBet = 1;
+    player1Bet = 1;
+    player2Bet = 1;
+    totalPot = player1Bet + player2Bet
+    // player1Stack = player1Stack - player1Bet;
+    // player2Stack = player2Stack - player2Bet;
     // renderBets();
 }
 
-// function shuffle() {
-//         // const shuffled = currentHand.push(Math.floor(Math.random() * 52))
-//         // return shuffled   
-// }
 
 function deal() {
     for (let i = 0; i <= 8; i++) {
@@ -331,11 +330,18 @@ function deal() {
     return currentHand
 }
 
+function nextRound() {
+        currentBet = 0;
+        player1Bet = 0;
+        player2Bet = 0;
+}
+
 function showWhoseTurn() {
-        player1Message.textContent = '';
-        player2Message.textContent = '';
+        // whoseTurn = whoseTurn * -1 
     if (playerTurn === 0) {
         player1Message.textContent = 'It is your turn!'
+        player2RenderBet.style.animation = 'blink 120s step-end infinite alternate'
+        player1RenderBet.style.animation = 'blink 0.5s step-end infinite alternate'
         playerTurn = playerTurn + 1
     }
     else if (playerTurn > 8) {
@@ -345,23 +351,36 @@ function showWhoseTurn() {
     }
     else if (playerTurn % 2 == 0) {
         player2Message.textContent = 'It is your turn!'
+        player2RenderBet.style.animation = 'blink 0.5s step-end infinite alternate'
+        player1Message.textContent = ''
+        player1RenderBet.style.animation = null
     }
     else {
         player1Message.textContent = 'It is your turn!'
+        player1RenderBet.style.animation = 'blink 0.5s step-end infinite alternate'
+        player2RenderBet.style.animation = null
+        player2Message.textContent = ''
     }
-        whoseTurn = whoseTurn * -1 
-        
+    // return whoseTurn
 }
 
 function render() {
-    currentBet
+    // currentBet = 0;
+    // player1Bet = 0;
+    // player2Bet = 0;
+    totalPot = player1Bet + player2Bet
     showWhoseTurn();
+    if (currentBet === 0) {
+        callButton.innerHTML = 'Bet'
+    }
+    if (currentBet !== 0) {
+        callButton.innerHTML = 'Call'
+    }
     if(playerTurn < 3) {
         for (let i = 0; i < 4; i++) {
             let card  = cards[i];
             card.classList.add(currentHand[i]);
         }
-
     }
     else if(playerTurn < 5) {
         for (let i = 4; i < 7; i++) {
@@ -383,7 +402,9 @@ function render() {
             buildSuits();  
             // getWinner();
         }
-    return
+    }
+    else {
+            return
     }
     player1RenderBet.textContent = 'Current Bet: $' + player1Bet
     player2RenderBet.textContent = 'Current Bet: $' + player2Bet
@@ -393,60 +414,74 @@ function render() {
 }
 
 function call() {
-    if(playerTurn > 7) {
+    if(playerTurn > 7 || folded === 1) {
         getWinner();
         return
     }
+    if (currentBet === 0 ) {
+        player1Bet = 1
+        currentBet = 1
+        player1Stack = player1Stack - player1Bet
+        render();
+    }
     else {
-        if (whoseTurn === 1) {
-            player1Bet = player1Bet + 0.5
+        if (playerTurn % 2 !== 0) {
+            player1Bet = player1Bet + (currentBet - player2Bet)
+            currentBet = player1Bet
+
             player1Stack = player1Stack - player1Bet
+           
             
             render();
         }
-        else if (whoseTurn === -1) {
+        else if (playerTurn % 2 == 0) {
             player2Bet = player2Bet + (currentBet - player2Bet)
+            currentBet = player1Bet
+
             player2Stack = player2Stack - player2Bet
-           
+            // currentBet = 0;
+            // player1Bet = 0;
+            // player2Bet = 0;
             render();
         }
-        beepAudio.play();
-        totalPot = player1Bet + player2Bet
-        playerTurn = playerTurn + 1
-        render();
-        // countDown();
     }
+    beepAudio.play();
+    totalPot = player1Bet + player2Bet
+    playerTurn = playerTurn + 1
+    nextRound();
+    render();
+    // countDown();
     return player1Bet, player1Stack, player2Bet, player2Stack
 }
 
 function raise() {
-    currentBet = 2;
-    if(playerTurn > 7) {
+    if(playerTurn > 7 || folded === 1) {
         return
     }
     else if (whoseTurn === 1) {
-        player1Bet = player1Bet + (currentBet - player1Bet)
+        player1Bet = 2
         player1Stack = player1Stack - player1Bet
+        currentBet = 2
         render();
     }
     else if (whoseTurn === -1) {
-        player2Bet = player2Bet + (currentBet - player2Bet)
-        player2Stack = player2Stack - player2Bet
-        
-        beepAudio.play();
+        player2Bet = 2
+        player2Stack = player2Stack - player2Bet 
+        render(); 
+    }
+    beepAudio.play();
         totalPot = player1Bet + player2Bet
         playerTurn = playerTurn + 1
         render();
-    }
     return player1Bet, player2Stack, player2Bet, player2Stack
 }
 
 function check() {
-    if(playerTurn > 7) {
+    if(playerTurn > 7 || folded === 1) {
         getWinner();
         return
     }
-    else if (currentBet === player1Bet === player2Bet) {
+    else if (player1Bet === player2Bet) {
         beepAudio.play();
         totalPot = player1Bet + player2Bet
         playerTurn = playerTurn + 1
@@ -456,20 +491,35 @@ function check() {
     else {
         return
     }
+    
+    
 }
 
 function fold() {
-    if(playerTurn > 7) {
+    if (playerTurn > 7 || folded === 1) {
         getWinner();
         return
     }
+    // if (playerTurn < 8) {
+    //     playerTurn = 9
+    //     beepAudio.play();
+    //     totalPot = player1Bet + player2Bet
+    //     // player1Message.textContent = '';
+    //     // player2Message.textContent = '';
+    //     // playerTurn = playerTurn + 1
+    //     getWinner();
+    //     render();
+    // }
     else {
+        folded = 1;
+        // playerTurn = 9
+        beepAudio.play();
         totalPot = player1Bet + player2Bet
         // player1Message.textContent = '';
         // player2Message.textContent = '';
         // playerTurn = playerTurn + 1
         getWinner();
-        render();
+        
     }
 }
 
