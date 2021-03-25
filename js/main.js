@@ -242,17 +242,17 @@ let playerSuits = [];
 let suitsBoard = [];
 let player1Suits = [];
 let player2Suits = [];
-let playerMessage = null
-let whoseTurn = null
-let winner = null
+let playerMessage = null;
+let whoseTurn = null;
+let winner = null;
 
 
-let player1Stack = 100
-let player2Stack = 100
-let totalPot = null
-let currentBet = null
-let player1Bet = null
-let player2Bet = null
+let player1Stack = 100;
+let player2Stack = 100;
+let totalPot = 0;
+let currentBet = 0;
+let player1Bet = 0;
+let player2Bet = 0;
 
 /*----- store HTML elements to use in functions and event listeners -----*/
 // let playArea 
@@ -276,7 +276,7 @@ let player1RenderStack = document.querySelector('.player1stack');
 let player2RenderBet = document.querySelector('.player2bet');
 let player2RenderStack = document.querySelector('.player2stack');
 let totalRenderPot = document.querySelector('.totalbet');
-let countdownEl = document.querySelector('.countdown')
+let countdownEl = document.querySelector('.countdown');
 
 /*----- event listeners -----*/
 callButton.addEventListener('click', call)
@@ -311,8 +311,8 @@ function initialize() {
     currentBet = 1;
     player1Bet = 0.5;
     player2Bet = 1;
-    player1Stack = player1Stack - player1Bet;
-    player2Stack = player2Stack - player2Bet;
+    // player1Stack = player1Stack - player1Bet;
+    // player2Stack = player2Stack - player2Bet;
     totalPot = player1Bet + player2Bet
     deal();
     render();
@@ -354,7 +354,7 @@ function showWhoseTurn() {
 }
 
 function render() {
-
+    currentBet
     showWhoseTurn();
     if(playerTurn < 3) {
         for (let i = 0; i < 4; i++) {
@@ -389,7 +389,7 @@ function render() {
     player2RenderBet.textContent = 'Current Bet: $' + player2Bet
     player1RenderStack.textContent = 'Total Bankroll: $' + player1Stack
     player2RenderStack.textContent = 'Total Bankroll: $' + player2Stack
-    totalRenderPot.textContent = 'Total Pot: ' + totalPot
+    totalRenderPot.textContent = 'Total Pot: $' + totalPot
 }
 
 function call() {
@@ -399,29 +399,46 @@ function call() {
     }
     else {
         if (whoseTurn === 1) {
-
-            player1Stack = player1Stack -1
+            player1Bet = player1Bet + 0.5
+            player1Stack = player1Stack - player1Bet
+            
+            render();
+        }
+        else if (whoseTurn === -1) {
+            player2Bet = player2Bet + (currentBet - player2Bet)
+            player2Stack = player2Stack - player2Bet
+           
+            render();
         }
         beepAudio.play();
-        totalBet = player1Bet + player2Bet
+        totalPot = player1Bet + player2Bet
         playerTurn = playerTurn + 1
         render();
         // countDown();
     }
+    return player1Bet, player1Stack, player2Bet, player2Stack
 }
 
 function raise() {
+    currentBet = 2;
     if(playerTurn > 7) {
         return
     }
-    else {
+    else if (whoseTurn === 1) {
+        player1Bet = player1Bet + (currentBet - player1Bet)
+        player1Stack = player1Stack - player1Bet
+        render();
+    }
+    else if (whoseTurn === -1) {
+        player2Bet = player2Bet + (currentBet - player2Bet)
+        player2Stack = player2Stack - player2Bet
+        
         beepAudio.play();
-        totalBet = player1Bet + player2Bet
-
+        totalPot = player1Bet + player2Bet
         playerTurn = playerTurn + 1
         render();
-        // countDown();
     }
+    return player1Bet, player2Stack, player2Bet, player2Stack
 }
 
 function check() {
@@ -429,13 +446,15 @@ function check() {
         getWinner();
         return
     }
-    else {
+    else if (currentBet === player1Bet === player2Bet) {
         beepAudio.play();
-        totalBet = player1Bet + player2Bet
-
+        totalPot = player1Bet + player2Bet
         playerTurn = playerTurn + 1
         render();
         // countDown();
+    }
+    else {
+        return
     }
 }
 
@@ -445,8 +464,9 @@ function fold() {
         return
     }
     else {
-        totalBet = player1Bet + player2Bet
-
+        totalPot = player1Bet + player2Bet
+        // player1Message.textContent = '';
+        // player2Message.textContent = '';
         // playerTurn = playerTurn + 1
         getWinner();
         render();
