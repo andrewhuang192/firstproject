@@ -39,7 +39,7 @@
       /* justify-content: space-evenly; */
       margin-left: 1px;
       /* max-width: 80%; */
-      margin-top: 1px;
+      margin-top: 25px;
       margin-bottom: 280px;
       
   }
@@ -188,17 +188,6 @@
     
   }
 
-  /* section grid { 
-   background-color: rgb(29, 109, 36);
-  } */
-
-  /* div h3 {
-    display: inline-flex;
-    flex-direction:row;
-    justify-content: center;
-    align-items: center;
-  } */
-
   .grid {
       display: flex;
       flex-direction: row;
@@ -217,8 +206,8 @@
   button {
     background-color: white;
     color: black;
-    width: 100px;
-    height: 30px;
+    width: 130px;
+    height: 40px;
     max-width: 200px;
     padding: 0px 5px;
     border: 2px solid rgb(152, 155, 0);
@@ -227,18 +216,18 @@
     margin-top: 5px;
     font-size: 15px;
     outline: none;
-    transition: background 0.5s ease-in-out;
+    transition: background 0.2s ease-in-out;
   }
 
   button:hover {
     background-color: black;
-    color: black;
+    color: #04035c;
+    font-weight: bolder;
     cursor: pointer;
     background: #cdced0e1;
   }
 
-
-  /* @charset "UTF-8"; */
+  @charset "UTF-8";
   .card {
     box-sizing: border-box;
     display: inline-block;

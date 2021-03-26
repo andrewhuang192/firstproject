@@ -295,7 +295,7 @@ callButton.addEventListener('click', call)
 raiseButton.addEventListener('click', raise)
 checkButton.addEventListener('click', check)
 foldButton.addEventListener('click', fold)
-resetButton.addEventListener('click', initialize)
+// resetButton.addEventListener('click', initialize)
 
 
 /*----- functions-----*/
