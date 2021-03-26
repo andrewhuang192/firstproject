@@ -20,7 +20,7 @@ Player 1 and Player 2 in the middle of a hand.
 
 ##GETTING STARTED
 
-https://andrewhuang192.github.io/video-poker
+http://andrewhuang192.github.io/video-poker
 
 ##NEXT STEPS
 
