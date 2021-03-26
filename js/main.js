@@ -1,67 +1,3 @@
-// --Load the app and initialize
-//     -empty flopBoard array
-//     -function shuffle()
-//     -function deal()
-//     -all buttons 'inactive'
-//     -playerTurn = 1 //there will be two players only
-    
-// --Player makes a move (event listener)
-//     -change the playerTurn
-//          -if call (add $1)
-//                 --if hand runs to river (run getWinner())
-//          -if fold (reset board)
-//                 -other player is the winner
-//          -if raise (add $2) 
-//                 --if hand runs to river (run getWinner())
-//          -if check (add $0)
-//                 -if hand runs to river (run getWinner())            
-//     -render available buttons
-
-// --deal() 
-//     -generates a currentHand[] array that contains all the cards necessary to run the hand to completion.
-
-// --Render ()
-//     -get and assign to innerHTML of each players cards
-//     -get flop and assign to innerHTML of flopBoard
-//     -use the flopBoard array to render the playArea HTML
-//     -if hand runs to river (run getWinner())
-
-// --getWinner()
-//         -buildArray() - separates into arrays
-//         -buildHand() - creates best hand for player 1 and player 2 using flopBoard
-//         -checkPairs() - create ranking based on pairs, triples, quads
-//         -checkfullHouse() - similar to check pairs
-//         -check flush
-//         -ETC
-
-//Betting logic:
-
-//initialize()
-    // --resets player1bet and player2bet to $1
-    // --subtracts $1 from player1stack and player2Stack
-    // --totalpot is $2
-//--render()
-    // --gets player1bet/player2bet value and displays as HTML
-    // --gets player1stack/player2stack value displays as HTML
-    // --gets totalpot value displays as HTML
-// --Call function
-    //--if currentBet !== player1Bet
-    // --adds $(currentBet = player1Bet) to player1bet if whoseTurn is 1
-    // --adds $1 to player2bet if whoseTurn is -1
-    // --subtracts $1 to player1stack if whoseTurn is 1
-    // --subtracts $1 to player2stack if whoseTurn is -1
-    // -adds $1 totalpot
-// --Fold function
-// --Raise function
-    // --adds $1 to player1bet if whoseTurn is $1
-    // --adds $1 to player2bet if whoseTurn is $2
-    // --subtracts $1 to player1stack if whoseTurn is $1
-    // --subtracts $1 to player2stack if whoseTurn is $2
-    // -adds $1 totalpot
-// --Check function
-// --reset function
-
-/*----- define required constants -----*/
 const beepAudio = new Audio('http://soundbible.com/mp3/Robot_blip-Marianne_Gagnon-120342607.mp3')
 
 const cardLookup = {
@@ -266,14 +202,6 @@ let player2Bet = 0;
 let folded = 0;
 let count = 0;
 
-/*----- store HTML elements to use in functions and event listeners -----*/
-// let playArea 
-// let player1Hand
-// let player2Hand = document.querySelector('')
-// let flopCard3
-// let flopCard4
-// let flopCard5
-// let currentCard = document.querySelectorAll('#card');
 let cards = document.querySelectorAll('section div div')
 let callButton = document.querySelector('#call');
 let raiseButton = document.querySelector('#raise');
@@ -290,17 +218,12 @@ let player2RenderStack = document.querySelector('.player2stack');
 let totalRenderPot = document.querySelector('.totalbet');
 let countdownEl = document.querySelector('.countdown');
 
-/*----- event listeners -----*/
 callButton.addEventListener('click', call)
 raiseButton.addEventListener('click', raise)
 checkButton.addEventListener('click', check)
 foldButton.addEventListener('click', fold)
-// resetButton.addEventListener('click', initialize)
 
-
-/*----- functions-----*/
 initialize ();
-// videoFunction();
 
 function videoFunction() {
     if (video.style.display === "none") {
@@ -332,7 +255,6 @@ function initialize() {
     totalPot = 0;
     render();
 }
-
 
 function deal() {
     for (let i = 0; i <= 8; i++) {
@@ -369,7 +291,6 @@ function showWhoseTurn() {
 }
 
 function render() {
-    // totalPot = totalPot + player1Bet + player2Bet
     showWhoseTurn();
     totalRenderPot.textContent = 'Total Pot: $' + totalPot
 
@@ -405,9 +326,6 @@ function render() {
         for (let i = 0; i < 9; i++) {
             let card  = cards[i];
             card.classList.add(currentHand[i]);
-            // buildArray();
-            // buildSuits();  
-            // getWinner();
         }
     }
     else {
@@ -427,7 +345,6 @@ function render() {
 
 function call() {
     if (playerTurn > 4 || folded === 1) {
-        // getWinner();
         return
     }
     beepAudio.play();
@@ -437,7 +354,6 @@ function call() {
     if (player1Bet < currentBet) {
         player1Bet = currentBet
         player1Stack = player1Stack - player1Bet
-        // totalPot = totalPot + player1Bet + player2Bet
         if (player2Bet === currentBet) {
             nextRound();  
         }
@@ -447,7 +363,6 @@ function call() {
     else if (player2Bet < currentBet) {
         player2Bet = currentBet
         player2Stack = player2Stack - player2Bet
-        // totalPot = totalPot + player1Bet + player2Bet
         if (player1Bet === currentBet) {
             nextRound();  
         }
@@ -461,7 +376,6 @@ function call() {
 
 function raise() {
     if (playerTurn > 4 || folded === 1) {
-        // getWinner();
         return
     }
     beepAudio.play();
@@ -471,7 +385,6 @@ function raise() {
     if (player1Bet < currentBet) {
         player1Bet = currentBet
         player1Stack = player1Stack - player1Bet
-        // totalPot = totalPot + player1Bet + player2Bet
         if (player2Bet === currentBet) {
             nextRound();  
         }
@@ -481,7 +394,6 @@ function raise() {
     else if (player2Bet < currentBet) {
         player2Bet = currentBet
         player2Stack = player2Stack - player2Bet
-        // totalPot = totalPot + player1Bet + player2Bet
         if (player1Bet === currentBet) {
             nextRound();  
         }
@@ -495,35 +407,29 @@ function raise() {
 
 function check() {
     if (playerTurn > 4 || folded === 1) {
-        // getWinner();
         return
     }
-        beepAudio.play();
+    beepAudio.play();
 
     if (currentBet - player1Bet > 0 || currentBet - player2Bet > 0) {
         return
     }
     else if (player1Bet === player2Bet && whoseTurn === -1) {
         whoseTurn = whoseTurn * -1 
-        // beepAudio.play();
-        // totalPot = totalPot + player1Bet + player2Bet
         render();
         nextRound();
-        // countDown();
     }
     else {
         whoseTurn = whoseTurn * -1 
         render();
         return
     }
-    // totalPot = totalPot + player1Bet + player2Bet
     render();
     return player1Bet, player1Stack, player2Bet, player2Stack
 }
 
 function fold() {
     if (playerTurn > 4 || folded === 1) {
-        // getWinner();
         return
     }
     else {
@@ -534,30 +440,6 @@ function fold() {
     }
 }
 
-// To compare two poker hands, you can just compute their rank individually and then compare the ranks. This makes comparing very easy.
-
-// To compute the rank of a hand, first classify it to one of the rows in the picture you posted. The result of this classification could look like:
-
-// royalflush ace
-// royalflush 5
-// pair 5, kickers ace jack 4 (note that the kickers are sorted already)
-// highcard ace, kickers queen 10 7 3
-// These results can be written as lists of numbers:
-
-// 10, 14 (the 10 means royal flush, the 14 means ace)
-// 10, 5
-// 2, 5, 14, 11, 4
-// 1, 14, 12, 10, 7, 3
-// Alternatively, you can also encode the complete hand as a single number. Each of the above numbers is less than 100, so you can write the numbers like this:
-
-// 10 14 00 00 00 00 = 101400000000
-// 10 05 00 00 00 00
-// +2 05 14 11 04 00
-// +1 14 12 10 07 03
-// And these are trivial to compare.
-
-
-//check for suits in suitsBoard, add to playerSuits - let playerSuits = player1Suits
 function buildFlush() {
     club1Count = player1Suits.filter(suit => suit === 4)
     spade1Count = player1Suits.filter(suit => suit === 3)
@@ -617,12 +499,11 @@ function buildSuits() {
     return player1Suits, player2Suits, playerSuits
 }
 
-//We will run x=player1Hand and x=player2Hand
 function checkPair(x) {
     let pairs = [];
     let quads = [];
     let triples = [];
-    // let fullHouse =[];
+    let fullHouse =[];
     x.map((elem, i) => {
         if (x[i] === x[i+1] === x[x+2] === x[x+3]) {
             quads.push(x[i], x[i+1], x[x+2], x[x+3]);
@@ -633,9 +514,6 @@ function checkPair(x) {
         else if (x[i] === x[i + 1]) {
             pairs.push(x[i], x[i + 1]);
         }
-        // else {
-            // return {pairs, triples, quads}
-        // }
     });
     if (quads.length === 4) {
         x.unshift(8)
@@ -663,9 +541,7 @@ function checkFullHouse(x) {
         if (x[i] === x[i+1] === x[x+2] && x[x+3] === x[x+4]) {
             fullHouse.push(x[i], x[i+1], x[x+2], x[x+3], x[x+4]);
         }
-        // else {
             return fullHouse
-        // }
     });
     if (fullHouse.length === 5) {
             x.unshift(7)
@@ -682,9 +558,7 @@ function checkStraight(x) {
         if (player1Hand[i+4] - player1Hand[i] === 4) {
             straight.push(x[i], x[i+1], x[x+2], x[x+3], x[x+4]);
         }
-        // else {
             return straight
-        // }
     };
     if (straight.length === 5) {
             x.unshift(5)
@@ -696,9 +570,6 @@ function checkStraight(x) {
 }
 
 function checkFlush(x) {
-    // for(let i=0; i< 9; i++) {
-    //     playerSuits.push(suitsLookup[currentHand[i]]);
-    // } 
     let flush = [];
     x.map((elem, i) => {
         if (x[i] === x[i+1] === x[x+2] === x[x+3] === x[x+4]) {
@@ -800,18 +671,17 @@ function getWinner() {
 
 function countDown() {
         let count = 10;
-        // beepAudio.play();
+        beepAudio.play();
         countdownEl.textContent = count;
         countdownEl.style.border = '4px solid black';
         let timerId = setInterval(() => {
           count--;
           if (count) {
-            // beepAudio.play();
+            beepAudio.play();
             countdownEl.textContent = count; 
           }
           else {
             clearInterval(timerId)
-            // goAudio.play();
             countdownEl.textContent = '';
             countdownEl.style.border = '4px solid white';
           }
