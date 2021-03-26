@@ -14,7 +14,7 @@
       height:  50px;
       /* background-color: #a2cbb6; */
       font-size: 20px;
-      margin: 5px 5px 360px 5px;;
+      margin: 5px 5px 720px 5px;;
       color: #04035c;
       justify-content: center;
       align-items: center;
@@ -37,16 +37,16 @@
   .nav-left {
       display: flex;
       /* justify-content: space-evenly; */
-      margin-left: 90px;
+      margin-left: 1px;
       /* max-width: 80%; */
       margin-top: 1px;
-      margin-bottom: 20p;
+      margin-bottom: 280px;
       
   }
 
   .nav-left-item {
       display: flex;
-      margin: 15px;
+      margin: 15px 50px;
       margin-top: 5px;
       align-items: flex-start;
       justify-content: space-between;
@@ -56,7 +56,7 @@
       display: flex;
       display: row;
       /* justify-content: space-evenly; */
-      margin-right: 52px;
+      margin-right: 100px;
       margin-left: 480px;
       align-items: row;
   }
@@ -101,6 +101,7 @@
       grid-template-columns: 1fr 2fr 1fr;
       justify-content: center;
       align-items: center;
+      margin-bottom: 150px;
   }
 
   .player1 {

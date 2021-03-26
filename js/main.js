@@ -430,7 +430,7 @@ function call() {
         // getWinner();
         return
     }
-        beepAudio.play();
+    beepAudio.play();
 
     whoseTurn = whoseTurn * -1 
     if (currentBet === 0) currentBet = 1;
@@ -459,28 +459,39 @@ function call() {
     return player1Bet, player1Stack, player2Bet, player2Stack
 }
 
-// function raise() {
-    // whoseTurn = whoseTurn * -1 
-//     if(playerTurn > 4 || folded === 1) {
-//         return
-//     }
-//     else if (whoseTurn === 1) {
-//         player1Bet = 2
-//         player1Stack = player1Stack - player1Bet
-//         currentBet = 2
-//         render();
-//     }
-//     else if (whoseTurn === -1) {
-//         player2Bet = 2
-//         player2Stack = player2Stack - player2Bet 
-//         render(); 
-//     }
-    //     beepAudio.play();
-//         totalPot = totalPot + player1Bet + player2Bet
-//         playerTurn = playerTurn + 1
-//         render();
-//     return player1Bet, player2Stack, player2Bet, player2Stack
-// }
+function raise() {
+    if (playerTurn > 4 || folded === 1) {
+        // getWinner();
+        return
+    }
+    beepAudio.play();
+
+    whoseTurn = whoseTurn * -1
+    if (currentBet === 0) currentBet = 2;
+    if (player1Bet < currentBet) {
+        player1Bet = currentBet
+        player1Stack = player1Stack - player1Bet
+        // totalPot = totalPot + player1Bet + player2Bet
+        if (player2Bet === currentBet) {
+            nextRound();  
+        }
+        render();
+        return
+    }
+    else if (player2Bet < currentBet) {
+        player2Bet = currentBet
+        player2Stack = player2Stack - player2Bet
+        // totalPot = totalPot + player1Bet + player2Bet
+        if (player1Bet === currentBet) {
+            nextRound();  
+        }
+        render();
+        return
+    }
+    totalPot = totalPot + player1Bet + player2Bet
+    render();
+    return player1Bet, player1Stack, player2Bet, player2Stack
+}
 
 function check() {
     if (playerTurn > 4 || folded === 1) {
@@ -516,8 +527,8 @@ function fold() {
         return
     }
     else {
+        beepAudio.play();
         folded = 1;
-        // beepAudio.play();
         totalPot = totalPot + player1Bet + player2Bet
         getWinner();
     }
@@ -559,41 +570,21 @@ function buildFlush() {
 }
 
 function buildHand(x) {
- for (let i = 0; i < 3; i++) {   
-        if(x[0] > x[1]) {
-                for(let a = 4; a < 9; a++) {
-                    if (playerNumbers[a] = x[0]) {
-                        x.push(x[0])
-                    }
-                    else {
-                        for(let a = 4; a < 9; a++) {
-                            if (playerNumbers[a] = x[1]) {
-                                x.push(x[1])
-                            }
-                        }
-                    }
-                }
-        }
-        if (x[0] > x[1]) {
-                for(let c = 4; c < 9; c++) {
-                    if (playerNumbers[c] > x[0]) {
-                        x.push(playerNumbers[c])
-                    }
-                    else {
-                        for(let d = 4; d < 9; d++) {
-                            if (playerNumbers[d] > x[1]) {
-                                x.push(playerNumbers[d])
-                            }
-                        }
-                    }
-                }
-        }
-        else {
-            x.push(Math.max(...flopBoard));
-        }
-        return x
+flopBoard = [playerNumbers[4], playerNumbers[5], playerNumbers[6], playerNumbers[7], playerNumbers[8]]
+    for (let i = 0; i < 3; i++) {   
+            if (flopBoard.includes(x[i])) {
+                x.push(x[i]);
+                const index = flopBoard.indexOf(x[i]);
+                flopBoard.splice(index, 1);
+            }
+            else {
+                x.push(Math.max(...flopBoard));
+                const index = flopBoard.indexOf(Math.max(...flopBoard));
+                flopBoard.splice(index, 1);
+            }
     }
     x.sort((a,b) => b - a);
+    return x
 }
 
 function buildArray() {
@@ -606,10 +597,6 @@ function buildArray() {
     for(let i=2; i<4; i++) { 
         player2Hand.push(arrayLookup[currentHand[i]]);
     } 
-    // for(let i=4; i< 9; i++) { 
-    //     player1Hand.push(arrayLookup[currentHand[i]]);
-    //     player2Hand.push(arrayLookup[currentHand[i]]);
-    // } 
     return player1Hand, player2Hand, playerNumbers
 }
 
@@ -753,7 +740,39 @@ function getWinner() {
     checkFlush(player2Suits);
     checkPair(player1Hand);
     checkPair(player2Hand);
-    if (player1Hand.length > player2Hand.length) {
+    if (club1Count.length > 4) {
+        winner = 1;
+        message.textContent = 'PLAYER ONE (1)'
+    }
+    if (spade1Count.length > 4) {
+        winner = 1;
+        message.textContent = 'PLAYER ONE (1)'
+    }
+    if (heart1Count.length > 4) {
+        winner = 1;
+        message.textContent = 'PLAYER ONE (1)'
+    }
+    if (diamond1Count.length > 4) {
+        winner = 1;
+        message.textContent = 'PLAYER ONE (1)'
+    }
+    if (club2Count.length > 4) {
+        winner = -1;
+        message.textContent = 'PLAYER TWO (2)'
+    }
+    if (spade2Count.length > 4) {
+        winner = -1;
+        message.textContent = 'PLAYER TWO (2)'
+    }
+    if (heart2Count.length > 4) {
+        winner = -1;
+        message.textContent = 'PLAYER TWO (2)'
+    }
+    if (diamond2Count.length > 4) {
+        winner = -1;
+        message.textContent = 'PLAYER TWO (2)'
+    }
+    else if (player1Hand.length > player2Hand.length) {
         winner = 1;
         message.textContent = 'PLAYER ONE (1)'
     }
