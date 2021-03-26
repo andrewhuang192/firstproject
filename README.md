@@ -8,13 +8,13 @@ _JavaScript, HTML5, CSS, Chrome DevTools_
 
 ##SCREENSHOTS
 
-![image](/Users/andrewhuang/Projects/Video-Poker/Screen Shot 2021-03-26 at 1.13.
+![image](file://Users/andrewhuang/Projects/Video-Poker/Screen Shot 2021-03-26 at 1.13.
 18 AM.png)
 
 This is the starting screen. 
 
 
-![image] (/Users/andrewhuang/Projects/Video-Poker/Screen Shot 2021-03-26 at 2.00.42 AM.png)
+![image] (file://Users/andrewhuang/Projects/Video-Poker/Screen Shot 2021-03-26 at 2.00.42 AM.png)
 
 Player 1 and Player 2 in the middle of a hand. 
 
