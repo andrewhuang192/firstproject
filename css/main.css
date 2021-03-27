@@ -3,16 +3,10 @@
       box-sizing: border-box;
   }
 
-  /* header {
-      display: flex;
-      align-items: flex-start;
-  } */
- 
   header nav {
       display: flex;
       flex-direction: row;
       height:  50px;
-      /* background-color: #a2cbb6; */
       font-size: 20px;
       margin: 5px 5px 720px 5px;;
       color: #04035c;
@@ -36,9 +30,7 @@
 
   .nav-left {
       display: flex;
-      /* justify-content: space-evenly; */
       margin-left: 1px;
-      /* max-width: 80%; */
       margin-top: 25px;
       margin-bottom: 280px;
       
@@ -55,7 +47,6 @@
   .nav-right {
       display: flex;
       display: row;
-      /* justify-content: space-evenly; */
       margin-right: 100px;
       margin-left: 480px;
       align-items: row;
@@ -105,8 +96,6 @@
   }
 
   .player1 {
-    /* display: flex;
-    flex-direction: row; */
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 1;
@@ -114,8 +103,6 @@
   }
 
   .player2 {
-    /* display: flex;
-    flex-direction: row; */
     grid-column-start: 3;
     grid-column-end: 4;
     grid-row-start: 1;
@@ -127,8 +114,6 @@
   }
 
   .flop {
-    /* display: flex;
-    flex-direction: row; */
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 1;
@@ -183,9 +168,7 @@
     justify-content: center;
     align-items: center;
     margin: 0px;
-    color: white;
-    /* background-color: rgb(29, 109, 36) */
-    
+    color: white;    
   }
 
   .grid {
@@ -233,21 +216,15 @@
     display: inline-block;
     margin: 5px 5px 10px 5px;
     cursor: pointer;
-    /* Set the card's dimensions, and size it relative to
-      it's font size. */
     font-size: inherit;
     width: 5.28em;
     height: 7.26em;
-    /* Add a default background color and border. */
     background-color: #fff;
     border-radius: 0.20em;
     border: 1px solid #c3c3c3;
-    /* Scale and set the background settings. */
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
-    /* "Hide" any text within the element (use text to be
-      simply compliant with screen readers, etc.). */
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden;
