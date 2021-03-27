@@ -165,10 +165,8 @@ const suitsLookup = {
     'c02': 4,
 }
 
-/*----- define required variables (MVC app's state) -----*/
 let video = document.getElementById("videoToggle");
 let playerTurn = null
-// let shuffleCards = [];
 let flopSuits = [];
 let handSuits = [];
 let player1Hand = [];
@@ -293,7 +291,6 @@ function showWhoseTurn() {
 function render() {
     showWhoseTurn();
     totalRenderPot.textContent = 'Total Pot: $' + totalPot
-
     if (playerTurn > 4 || folded === 1) {
         getWinner();
         return
